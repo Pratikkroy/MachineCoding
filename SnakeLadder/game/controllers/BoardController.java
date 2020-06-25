@@ -1,29 +1,49 @@
 package SnakeLadder.game.controllers;
 
-import SnakeLadder.game.services.BoardService;
+import SnakeLadder.game.models.Board;
+import SnakeLadder.game.models.Ladder;
+import SnakeLadder.game.models.Snake;
 
 public class BoardController {
 
-    final BoardService boardService;
+    private final Board board;
 
-    public BoardController(final BoardService boardService) {
-        this.boardService = boardService;
+    public BoardController(final Board board) {
+        this.board = board;
     }
 
 
     /**
-     * ================== Board actions ==================
+     * ================== Board Services ==================
      */
 
-    public int getNewPosition(int position) {
-        return boardService.getNewPosition(position);
+    public int getNewPosition(final int position, final int stepsToMove) {
+
+        int previousPosition = position;
+        int newPosition = previousPosition;
+
+        do {
+            for(Ladder ladder: board.getLadders()) {
+                if(previousPosition + stepsToMove == ladder.getStart()) {
+                    newPosition = ladder.getEnd();
+                }
+            }
+
+            for(Snake snake: board.getSnakes()) {
+                if(previousPosition + stepsToMove == snake.getStart()) {
+                    newPosition = snake.getEnd();
+                }
+            }
+        }while(previousPosition!=newPosition);
+
+        return newPosition;
     }
+
     public int getBoardSize() {
-        return boardService.getBoardSize();
+        return board.getBoardSize();
     }
 
     public boolean canMoveToNewPosition(int newPosition) {
-        return boardService.canMoveToNewPosition(newPosition);
+        return newPosition <= getBoardSize();
     }
-
 }
