@@ -1,26 +1,22 @@
 package SnakeLadder.game.controllers;
 
-import SnakeLadder.game.models.Board;
-import SnakeLadder.game.models.Ladder;
-import SnakeLadder.game.models.Player;
-import SnakeLadder.game.models.Snake;
+import SnakeLadder.game.models.*;
 import SnakeLadder.game.services.BoardService;
 
 import java.util.List;
 
 public class GameController {
 
-    private final int               INITIAL_NUMBER_OF_PLAYERS;
+    private final Game              snakeAndLadderGame;
     private final BoardController   boardController;
     private final PlayersController playersController;
-    private       boolean           isGameCompleted = false;
+
 
     public GameController(final int boardSize, final int diceCount,
             final List<Snake> snakes, final List<Ladder> ladders, final List<Player> players) {
-        this.INITIAL_NUMBER_OF_PLAYERS = players.size();
 
         // initialise board
-        Board board = new Board(boardSize);
+        final Board board = new Board(boardSize);
         board.setSnakes(snakes);
         board.setLadders(ladders);
         BoardService boardService = new BoardService(board, diceCount);
@@ -28,10 +24,14 @@ public class GameController {
 
         // initialise players
         playersController = new PlayersController(players);
+
+        // initialise game
+        snakeAndLadderGame = new Game(players, board);
+
     }
 
     public void startGame() {
-        while (!isGameCompleted) {
+        while (!snakeAndLadderGame.hasGameCompleted()) {
             Player player = playersController.getNextPlayer();
 
             int newPosition = boardController.getNewPosition(playersController.getPlayerPosition(player));
@@ -49,12 +49,13 @@ public class GameController {
             }
 
             if (playersController.getCurrentPlayers() == 1) {
-                isGameCompleted = true;
+                snakeAndLadderGame.setGameCompleted(true);
             }
         }
     }
 
-    private boolean hasPlayerWon(Player player) {
+    private boolean hasPlayerWon(final Player player) {
         return boardController.getBoardSize() == playersController.getPlayerPosition(player);
     }
+
 }
