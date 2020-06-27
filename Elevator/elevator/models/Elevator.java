@@ -28,7 +28,7 @@ public class Elevator {
         this.MAX_PEOPLE_ACCOMODATE = maxNumberOfPeople;
         this.MAX_FLOORS = maxNumberOfFloor;
         this.elevatorDoor = new Door();
-        this.elevatorState = new State(Direction.UP,false,0);
+        this.elevatorState = new State(null,false,0);
         this.elevatorDisplay = new Display(elevatorState);
 
         floorNumbersButton = new HashMap<>();

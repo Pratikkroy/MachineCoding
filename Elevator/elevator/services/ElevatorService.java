@@ -204,15 +204,18 @@ public class ElevatorService {
      */
     public Direction getElevatorDirectionToMove(final int elevatorCurrentFloor,
             final Direction elevatorCurrentDirection) {
+        boolean hasElevatorRequestedToGoUp = hasElevatorRequestedToGoUp(elevatorCurrentFloor);
+        boolean hasElevatorRequestedToGoDown = hasElevatorRequestedToGoDown(elevatorCurrentFloor);
+
+        if(!hasElevatorRequestedToGoUp && !hasElevatorRequestedToGoDown){
+            return null;
+        }
         if(isElevatorAtTopFloor()) {
             return Direction.DOWN;
         }
         else if(isElevatorAtGroundFloor()) {
             return Direction.UP;
         }
-
-        boolean hasElevatorRequestedToGoUp = hasElevatorRequestedToGoUp(elevatorCurrentFloor);
-        boolean hasElevatorRequestedToGoDown = hasElevatorRequestedToGoDown(elevatorCurrentFloor);
 
         if(elevatorCurrentDirection.equals(Direction.UP)) {
             if(hasElevatorRequestedToGoUp) {
