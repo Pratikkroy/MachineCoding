@@ -15,65 +15,75 @@ public class ElevatorController {
         ButtonController buttonController = new ButtonController();
         DisplayController displayController = new DisplayController(elevator.getElevatorDisplay());
         this.elevatorService = new ElevatorService(elevator, doorController, stateController, buttonController, displayController);
+
+        Thread thread = new Thread(() -> {
+            Thread.currentThread().setName("ELEVATOR THREAD");
+            System.out.println(Thread.currentThread().getName()+" - ELEVATOR START");
+            while(true) {
+                elevatorService.startElevator();
+            }
+        });
+        thread.start();
     }
 
     /**
      * Methods to be called from outside the elevator
      */
     public void requestToGoUpwardDirection(final int requestAtFloor) {
-        System.out.println("requestToGoUpwardDirection from requestAtFloor = ["+requestAtFloor+"]");
+        System.out.println(Thread.currentThread().getName()+" - requestToGoUpwardDirection from requestAtFloor = ["+requestAtFloor+"]");
         if(!checkIfItIsSafeToExecute(requestAtFloor)) {
-            System.out.println("Invalid input");
+            System.out.println(Thread.currentThread().getName()+" - Invalid input");
             return;
         }
         if(requestAtFloor == elevatorService.getMaxNumberOfFloor()) {
-            System.out.println("Can't go upward. Already at top floor");
+            System.out.println(Thread.currentThread().getName()+" - Can't go upward. Already at top floor");
             return;
         }
         elevatorService.activeElevatorRequestButtonToGoUp(requestAtFloor);
-        elevatorService.startElevator();
+//        elevatorService.startElevator();
+
     }
 
     public void requestToGoDownwardDirection(final int requestAtFloor) {
-        System.out.println("requestToGoDownwardDirection from requestAtFloor = ["+requestAtFloor+"]");
+        System.out.println(Thread.currentThread().getName()+" - requestToGoDownwardDirection from requestAtFloor = ["+requestAtFloor+"]");
         if(!checkIfItIsSafeToExecute(requestAtFloor)) {
-            System.out.println("Invalid input");
+            System.out.println(Thread.currentThread().getName()+" - Invalid input");
             return;
         }
         if(requestAtFloor == 0) {
-            System.out.println("Can't go downward. Already at ground floor");
+            System.out.println(Thread.currentThread().getName()+" - Can't go downward. Already at ground floor");
             return;
         }
         elevatorService.activeElevatorRequestButtonToGoDown(requestAtFloor);
-        elevatorService.startElevator();
+//        elevatorService.startElevator();
     }
 
     /**
      * Methods to be called from inside the elevator
      */
     public void requestToGoToFloor(final int floorNumber) {
-        System.out.println("requestToGoToFloor = ["+floorNumber+"]");
+        System.out.println(Thread.currentThread().getName()+" - requestToGoToFloor = ["+floorNumber+"]");
         if(!checkIfItIsSafeToExecute(floorNumber)) {
-            System.out.println("Invalid input");
+            System.out.println(Thread.currentThread().getName()+" - Invalid input");
             return;
         }
         elevatorService.activeElevatorNumberButton(floorNumber);
-        elevatorService.startElevator();
+//        elevatorService.startElevator();
     }
 
     public void requestToNoToGoFloor(final int floorNumber) {
-        System.out.println("requestToNoToGoFloor = ["+floorNumber+"]");
+        System.out.println(Thread.currentThread().getName()+" - requestToNoToGoFloor = ["+floorNumber+"]");
         elevatorService.deactiveElevatorNumberButton(floorNumber);
-        elevatorService.startElevator();
+//        elevatorService.startElevator();
     }
 
     public void requestToOpenDoor() {
-        System.out.println("requestToOpenDoor");
+        System.out.println(Thread.currentThread().getName()+" - requestToOpenDoor");
         elevatorService.openElevatorDoor();
     }
 
     public void requestToCloseDoor() {
-        System.out.println("requestToCloseDoor");
+        System.out.println(Thread.currentThread().getName()+" - requestToCloseDoor");
         elevatorService.closeElevatorDoor();
     }
 

@@ -10,12 +10,12 @@ public class Door {
 
     public void open() {
         isClosed = false;
-        System.out.println("Door is opened.");
+        System.out.println(Thread.currentThread().getName()+" - Door is opened.");
     }
 
     public void close() {
         isClosed = true;
-        System.out.println("Door is closed.");
+        System.out.println(Thread.currentThread().getName()+" - Door is closed.");
     }
 
     public boolean isClosed() {

@@ -37,13 +37,17 @@ public class ElevatorService {
         /**
          * takeElevatorToNextFloor will be called only one time.
          */
-        closeElevatorDoor();
+        int elevatorCurrentFloorBefore = stateController.getCurrentFloor();
         takeElevatorToNextFloor();
         int elevatorCurrentFloor = getElevatorCurrentFloor();
         deactiveElevatorNumberButton(elevatorCurrentFloor);
         deactiveElevatorRequestButton(elevatorCurrentFloor);
         displayElevatorStatus();
-        openElevatorDoor();
+
+        if(elevatorCurrentFloorBefore!=elevatorCurrentFloor){
+            openElevatorDoor();
+            closeElevatorDoor();
+        }
     }
 
     /**
@@ -210,6 +214,7 @@ public class ElevatorService {
         if(!hasElevatorRequestedToGoUp && !hasElevatorRequestedToGoDown){
             return null;
         }
+
         if(isElevatorAtTopFloor()) {
             return Direction.DOWN;
         }

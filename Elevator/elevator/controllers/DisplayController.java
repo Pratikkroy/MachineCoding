@@ -22,7 +22,8 @@ public class DisplayController {
     public boolean isMoving() { return display.isMoving(); }
 
     public void display() {
-        System.out.println("Current floor = ["+getFloor()+"]   Current direction = ["+getDirection()+"]   IsMoving = "
+        System.out.println(Thread.currentThread().getName()+" - Current floor = ["+getFloor()+"]   Current direction "
+                + "= ["+getDirection()+"]   IsMoving = "
                 + "["+isMoving()+"]" );
     }
 }
